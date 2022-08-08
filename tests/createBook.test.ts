@@ -4,7 +4,7 @@ test('deve obter sucesso ao cadastrar um livro fisico', async () => {
   const inputData = {
     title: 'Clean Code',
     qtdPages: 421,
-    authorId: '62eaca99dd7850bc9adc4174',
+    authorId: '62ec346571f64b42be5a44f3',
     publishDate: '2008-08-01',
   };
 
@@ -31,7 +31,7 @@ test('deve falhar ao tentar cadastrar um livro com uma data de publicação no f
   const inputData = {
     title: 'Livro teste',
     qtdPages: 421,
-    authorId: '62eaca99dd7850bc9adc4174',
+    authorId: '62ec346571f64b42be5a44f3',
     publishDate: new Date('2022-09-01')
   };
 
@@ -47,7 +47,7 @@ test('deve obter sucesso ao cadastrar um livro digital', async () => {
   const inputData = {
     title: 'Livro teste',
     qtdPages: 421,
-    authorId: '62eaca99dd7850bc9adc4174',
+    authorId: '62ec346571f64b42be5a44f3',
     publishDate: '2008-08-01',
     isDigital: true,
     sizeInKBytes: 100,
@@ -67,7 +67,7 @@ test('deve falhar ao tentar cadastrar um livro digital sem informar sizeInKBytes
   const inputData = {
     title: 'Livro teste',
     qtdPages: 421,
-    authorId: '62eaca99dd7850bc9adc4174',
+    authorId: '62ec346571f64b42be5a44f3',
     publishDate: '2008-08-01',
     isDigital: true,
     kindleCompatible: true,

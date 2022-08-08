@@ -1,3 +1,7 @@
 export class Author {
-  constructor(public name: string) {}
+  constructor(
+    public name: string,
+    public qtdBooks: number,
+    public id?: string
+  ) {}
 }
