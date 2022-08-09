@@ -5,11 +5,12 @@ import { Book } from './entities/book';
 import { DigitalBook } from './entities/digitalBook';
 import { makeCreateAuthorService } from './factory/createAuthorService.factory';
 import { makeCreateBookService } from './factory/createBookService.factory';
+import { AuthorImplementationRepository } from './repository/author.implementation.repository';
 import { CreateAuthorService } from './services/createAuthor.service';
 
 const authorSchema = new mongoose.Schema({
   nome: { type: 'String', required: true },
-  quantidade_livros: { type: 'Number', required: true, default: 0 },
+  quantidade_livros: { type: 'Number', required: true },
 });
 
 const bookSchema = new mongoose.Schema({
@@ -45,37 +46,36 @@ app.get('/', (req, res) => {
 });
 
 app.post('/authors', async (req, res) => {
-  const { name, qtdBooks } = req.body;
+  try {
+    const { name } = req.body;
 
-  const createAuthorService = makeCreateAuthorService();
+    const createAuthorService = makeCreateAuthorService();
 
-  if (!name || name.trim().length == 0) {
-    return res.status(404).send({
-      message: 'autor é obrigatório e não pode ser vazio',
+    let author: Author;
+    author = new Author(
+      name,
+    );
+
+    const createdAuthor = await createAuthorService.createAuthor(author);
+
+    return res.status(200).send({
+      message: 'author created',
+      data: createdAuthor,
+    });
+  } catch (error: any) {
+    return res.status(400).send({
+      message: error.message,
       data: null,
     });
   }
-
-  let author: Author;
-   author = new Author(
-    name,
-    qtdBooks,
-   );
-
-  const createdAuthor = await createAuthorService.createAuthor(author);
-
-  return res.status(200).send({
-    message: 'author created',
-    data: createdAuthor,
-  });
 });
 
 app.get('/authors', async (req, res) => {
-  const authors = await AuthorModel.find({});
+  const listAuthor = await new AuthorImplementationRepository().findAll();
 
   return res.status(200).send({
     message: 'authors listed with success',
-    data: authors,
+    data: listAuthor,
   });
 });
 
