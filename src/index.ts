@@ -5,8 +5,10 @@ import { Book } from './entities/book';
 import { DigitalBook } from './entities/digitalBook';
 import { makeCreateAuthorService } from './factory/createAuthorService.factory';
 import { makeCreateBookService } from './factory/createBookService.factory';
+import { makeGetAllAuthorService } from './factory/getAllAuthorService.factory copy';
 import { AuthorImplementationRepository } from './repository/author.implementation.repository';
 import { CreateAuthorService } from './services/createAuthor.service';
+import { GetAllAuthorService } from './services/GetAllAuthor.service';
 
 const authorSchema = new mongoose.Schema({
   nome: { type: 'String', required: true },
@@ -71,12 +73,21 @@ app.post('/authors', async (req, res) => {
 });
 
 app.get('/authors', async (req, res) => {
-  const listAuthor = await new AuthorImplementationRepository().findAll();
+  try {
+    const getAllAuthorService = makeGetAllAuthorService();
 
-  return res.status(200).send({
-    message: 'authors listed with success',
-    data: listAuthor,
-  });
+    const listAuthor = await getAllAuthorService.getAllAuthor();
+
+    return res.status(200).send({
+      message: 'authors listed with success',
+      data: listAuthor,
+    });
+  } catch (error: any) {
+    return res.status(400).send({
+      message: error.message,
+      data: null,
+    });
+  }
 });
 
 app.get('/books', async (req, res) => {
