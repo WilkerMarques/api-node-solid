@@ -1,6 +1,6 @@
 import { Book } from '../entities/book';
 import { DigitalBook } from '../entities/digitalBook';
-import { BookModel } from '../index';
+import { BookModel } from '../schemas/bookSchema';
 import { BookRepository } from './book.repository';
 
 export class BookImplementationRepository implements BookRepository {
