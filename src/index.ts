@@ -5,10 +5,8 @@ import { Book } from './entities/book';
 import { DigitalBook } from './entities/digitalBook';
 import { makeCreateAuthorService } from './factory/createAuthorService.factory';
 import { makeCreateBookService } from './factory/createBookService.factory';
-import { makeGetAllAuthorService } from './factory/getAllAuthorService.factory copy';
-import { AuthorImplementationRepository } from './repository/author.implementation.repository';
-import { CreateAuthorService } from './services/createAuthor.service';
-import { GetAllAuthorService } from './services/GetAllAuthor.service';
+import { makeGetAllAuthorService } from './factory/getAllAuthorService.factory';
+import { makeGetAllBookService } from './factory/getAllBookService.factory';
 
 const authorSchema = new mongoose.Schema({
   nome: { type: 'String', required: true },
@@ -91,12 +89,21 @@ app.get('/authors', async (req, res) => {
 });
 
 app.get('/books', async (req, res) => {
-  const books = await BookModel.find({}).populate('autor');
+  try {
+    const getAllBookService = makeGetAllBookService();
 
-  res.status(200).send({
-    message: 'books listed with success',
-    data: books,
-  });
+    const listBooks = await getAllBookService.getAllBook();
+
+    res.status(200).send({
+      message: 'books listed with success',
+      data: listBooks,
+    });
+  } catch (error: any) {
+    return res.status(400).send({
+      message: error.message,
+      data: null,
+    });
+  }
 });
 
 app.post('/books', async (req, res) => {
